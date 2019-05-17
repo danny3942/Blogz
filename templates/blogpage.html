@@ -1,0 +1,8 @@
+{% extends 'index.html' %}
+{% block content %}
+    <h1>{{ user.username }}'s Blog!</h1>
+    {% for blog in blogs %}
+        <h2 class="blog"><a href="/post?id={{blog.id}}">{{blog.get_title()}}</a></h2>
+        <p class="blog">{{ blog.get_body() }}</p>
+    {% endfor %}
+{% endblock %}

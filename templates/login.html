@@ -1,0 +1,29 @@
+{% extends "index.html" %}
+{% block content %}
+    {% if new %}
+        <p>Welcome! {{username}}</p>
+    {% endif %}
+    <form method="POST">
+        <table>
+            <tr>
+                <td><label for="username">Username</label></td>
+                <td>
+                    <input name="username" type="text" value="{{username}}">
+                </td>
+            </tr>
+            <tr>
+                <td><label for="password">Password</label></td>
+                <td>
+                    <input name="password" type="password">
+                </td>
+                {% if err %}
+                    <i class="error">{{ mssg }}</i>
+                {% endif %}
+            </tr>
+            <tr>
+                <td><input type="submit" value="Login" action="/login"></td>
+                <td>Don't have an account? <a href="/register">Create one!</a></td>
+            </tr>
+        </table>
+    </form>
+{% endblock %}

@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Blogz!</title>
+        <style>
+            .blog {
+                text-align:center;
+            }
+            .all {
+                text-align:center;
+            }
+            .error {
+                color:red;
+            }
+            .left {
+                text-align:left;
+                margin:20px;
+            }
+            .right {
+                text-align:right;
+                margin:20px;
+            }
+        </style>
+    </head>
+    <body>
+        <a href="/" class="left">home</a><a href="/all" class="left">all posts</a><a class="left" href="/newpost?u={{id}}">new post</a>
+        <a class="right" href="/login">login</a><a class="right" href="/logout?n={{id}}">logout</a>
+        {% if loggedin %}
+            <h2>Welcome back, {{username}}!</h2>
+        {% endif %}
+        {% if ind %}
+            {% for user in users %}
+                <h3 class="all"><a href="/user?id={{ user.id }}">{{ user.username }}</a></h3>
+            {% endfor %}
+        {% endif %}
+        {% block content %}
+        {% endblock %}
+    </body>
+</html>

@@ -1,0 +1,7 @@
+{% extends "index.html" %}
+{% block content %}
+    {% for blog in blogs %}
+        <h1 class="center">{{ blog.get_title() }}</h1>
+        <p class="center">{{ blog.get_body() }}</p>
+    {% endfor %}
+{% endblock %}

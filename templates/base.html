@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+    <head>
+        <title>{{title}}</title>
+        <style>
+            .center {
+                text-align:center;
+            }
+        </style>
+    </head>
+<body>
+    <h2><a href="/blog">Add New Post</a></h2>
+    {% block content %}
+    {% endblock %}
+    <h1 class="center" href="/">Build-A-Blog!</h1>
+    {% for blog in blogs %}
+        <h1 class="center"><a href="/blogpost?id={{ blog.id }}">{{ blog.get_title() }}</a></h1>
+        <p class="center">{{ blog.get_body() }}</p>
+    {% endfor %}
+
+</body>
+</html>

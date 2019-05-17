@@ -1,0 +1,6 @@
+{% extends 'index.html' %}
+{% block content %}
+    <h2 class="blog">{{blog.title}}</h2>
+    <p class="blog">{{blog.body}}</p>
+    <p class="blog">By: <a href="/user?id={{user.id}}">{{user.username}}</a></p>
+{% endblock %}

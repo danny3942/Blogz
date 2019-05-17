@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<form method="POST">
+    <table>
+        <tr>
+            <td><label for="title">Blog Title:</label></td>
+            <td>
+                <input type="text" name="title">
+            </td>
+        </tr>
+        <tr>
+            <td><label for="poop">Blog Contents:</label></td>
+            <td>
+                <textarea rows="5" cols="20" name="poop">
+                </textarea>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="submit" action="/newpost"></td>
+        </tr>
+    </table>
+</form>
+{% endblock %}

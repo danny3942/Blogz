@@ -1,0 +1,12 @@
+{% extends 'index.html' %}
+{% block content %}
+    {% for user in users %}
+        <h1><a href="/user?id={{user.id}}">{{ user.username }}'s</a> Blog!</h1>
+        {% for blog in blogs %}
+            {% if user.id == blog.user_id %}
+                <h2 class="all"><a href="/post?id={{blog.id}}">{{ blog.title }}</a></h2>
+                <p class="all">{{ blog.body }}</p>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+{% endblock %}

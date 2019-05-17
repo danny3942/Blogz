@@ -57,10 +57,16 @@ def all():
 
 @app.route('/post')
 def post():
+    if request.args.get('id') != "" and not(request.args.get('id') is None):
+        post = Blog.query.filter_by(id=request.args.get('id')).first()
+        if post is None:
+            return redirect('/all')
+        else:
+            user = User.query.filter_by(id=post.user_id).first()
+            return render_template('post.html', user=user, blog=post)
+    else:
+        return redirect('/all')
 
-    post = Blog.query.filter_by(id=request.args.get('id')).first()
-    user = User.query.filter_by(id=post.user_id).first()
-    return render_template('post.html', user=user, blog=post)
 
 @app.route('/blog' , methods=['POST' , 'GET'])
 def blog():
@@ -70,30 +76,36 @@ def blog():
 
 @app.route('/user')
 def userblog():
-    usr = User.query.filter_by(id=request.args.get('id')).first()
-    blogz = Blog.query.filter_by(user_id=usr.id).all()
-    return render_template('blogpage.html', blogs=blogz , user=usr)
+    if request.args.get('id') != "" and not(request.args.get('id') is None):
+        usr = User.query.filter_by(id=request.args.get('id')).first()
+        blogz = Blog.query.filter_by(user_id=request.args.get('id')).all()
+        if usr is None or blogz is None:
+            return redirect('/all')
+        else:    
+            return render_template('blogpage.html', blogs=blogz , user=usr)
+    else:
+        return redirect('/all')
 
 
 @app.route('/newpost' , methods=['POST' , 'GET'])
 def blogpost():
     if request.method=='GET':
         if 'user' in session:
-            usr = User.query.filter_by(id=request.args.get('u')).first()
+            usr = User.query.filter_by(id=session['user']).first()
             return render_template('newpost.html' , id=usr.id , username=usr.username)
         else:
             return redirect('/login')
     elif request.method=='POST':
         name = request.form['title']
         body = request.form['body']
-        usr = User.query.filter_by(id=request.form['id']).first()
+        usr = User.query.filter_by(id=session['user']).first()
         if name != '' and body != '' and not(name is None or body is None):
 
             entry = Blog(name , body , usr.id)
             db.session.add(entry)
             db.session.commit()
             blogz = Blog.query.all()
-            return redirect('/user?id=' + str(usr.id))
+            return redirect('/user')
         else:
             return render_template('newpost.html' , id=usr.id , username=usr.username, err=True, mssg="Title and Content cannot be empty!")
 
@@ -108,7 +120,7 @@ def login():
         usr = User.query.filter_by(username=name).first()
         if name != "" and passw != '' and not(name is None or passw is None):
             if usr.password == passw:
-                session['user'] = usr.username
+                session['user'] = usr.id
                 return render_template('index.html' , id=usr.id , username=usr.username, loggedin=True)
             else:
                 return render_template('login.html' , err=True, mssg="Username or Password is incorrect!")
@@ -161,7 +173,7 @@ def register():
             db.session.add(new_user)
             db.session.commit()
             user = User.query.filter_by(username=username).first()
-            return render_template('login.html' , new=True , username=user.username , id=user.id)
+            return redirect('/login')
     else:
         return render_template('register.html')
 
